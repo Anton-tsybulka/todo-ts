@@ -1,24 +1,29 @@
-import React, { useRef } from 'react'
+import React, {  useState } from 'react'
 
 interface ITodoForm {
     addHandler(title: string): void
 }
 
 export const TodoForm: React.FC<ITodoForm> = ({addHandler}) => {
-    const ref = useRef<HTMLInputElement>(null)
+    const [title, setTitle] = useState<string>('')
+
+    const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setTitle(event.target.value)
+    }
 
     const pressHandler = (event: React.KeyboardEvent) => {
         if (event.key === 'Enter') {
-            addHandler(ref.current!.value)
-            ref.current!.value = ''                     
+            addHandler(title)
+            setTitle('')                  
         }
     }
 
     return (
         <div className="input-field mt2">
             <input
+                onChange={changeHandler}
                 onKeyPress={pressHandler}
-                ref={ref} 
+                value={title} 
                 type="text" 
                 id="title" 
                 placeholder="Введите название дела" />
